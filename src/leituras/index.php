@@ -1,5 +1,5 @@
 <?php
-//2021.09.05.00
+//2021.09.06.00
 //Protocol Corporation Ltda.
 https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -32,8 +32,11 @@ function Command_leitura(){
     'ntl' => 'Natal'
   ];
   $index = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/ApiCatolica/main/src/index-min.json');
+  $especiais = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/ApiCatolica/main/src/especiais-min.json');
   $index = json_decode($index, true);
+  $especiais = json_decode($especiais, true);
   $temp = $AnoLiturgico->TempoGet(time());
+
   if(strpos($temp, 'TempoComum') === 0):
     $tempo = 'tc';
     $semana = substr($temp, 10);
@@ -48,15 +51,34 @@ function Command_leitura(){
       $ano = 'i';
     endif;
   endif;
-  $texto = '<b>' . $semana . 'ª semana do ' . $Tempos[$tempo] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
-  $texto .= '1ª leitura: ' . $index[$tempo][$semana][$DiaSemana][$ano][1] . "\n";
-  $texto .= 'Responsório: ' . $index[$tempo][$semana][$DiaSemana][$ano]['r'] . "\n";
-  if($DiaSemana === '7'):
-    $texto .= '2ª leitura: ' . $index[$tempo][$semana][$DiaSemana][$ano][2] . "\n";
-    $texto .= 'Evangelho: ' . $index[$tempo][$semana][$DiaSemana][$ano]['e'] . "\n\n";
+  $hoje = date('Y-m-d');
+  if(isset($especiais[$hoje])):
+    $l1 = $especiais[$hoje][1];
+    $r = $especiais[$hoje]['r'];
+    if($DiaSemana === '7'):
+      $l2 = $especiais[$hoje][2];
+      $e = $especiais[$hoje]['e'];
+    else:
+      $e = $especiais[$hoje]['e'];
+    endif;
   else:
-    $texto .= 'Evangelho: ' . $index[$tempo][$semana][$DiaSemana]['e'] . "\n\n";
+    $l1 = $index[$tempo][$semana][$DiaSemana][$ano][1];
+    $r = $index[$tempo][$semana][$DiaSemana][$ano]['r'];
+    if($DiaSemana === '7'):
+      $l2 = $index[$tempo][$semana][$DiaSemana][$ano][2];
+      $e = $index[$tempo][$semana][$DiaSemana][$ano]['e'];
+    else:
+      $e = $index[$tempo][$semana][$DiaSemana]['e'];
+    endif;
   endif;
+
+  $texto = '<b>' . $semana . 'ª semana do ' . $Tempos[$tempo] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
+  $texto .= '1ª leitura: ' . $l1 . "\n";
+  $texto .= 'Responsório: ' . $r . "\n";
+  if($DiaSemana === '7'):
+    $texto .= '2ª leitura: ' . $l2 . "\n";
+  endif;
+  $texto .= 'Evangelho: ' . $e . "\n\n";
   $Bot->Send($Bot->ChatId(), $texto);
   LogEvent('leitura');
 }
