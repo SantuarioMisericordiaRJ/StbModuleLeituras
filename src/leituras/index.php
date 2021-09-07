@@ -1,5 +1,5 @@
 <?php
-//2021.09.06.00
+//2021.09.07.00
 //Protocol Corporation Ltda.
 https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -37,9 +37,9 @@ function Command_leitura(){
   $especiais = json_decode($especiais, true);
   $temp = $AnoLiturgico->TempoGet(time());
 
-  if(strpos($temp, 'TempoComum') === 0):
+  if($temp[0] === AnoLiturgico::TempoComum):
     $tempo = 'tc';
-    $semana = substr($temp, 10);
+    $semana = $temp[1];
   endif;
   $DiaSemana = date('N');
   if($DiaSemana === '7'):
