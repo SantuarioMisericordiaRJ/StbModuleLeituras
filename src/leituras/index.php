@@ -1,5 +1,5 @@
 <?php
-//2021.09.07.02
+//2021.09.07.03
 //Protocol Corporation Ltda.
 https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -36,6 +36,7 @@ function Command_leitura(){
   $index = json_decode($index, true);
   $especiais = json_decode($especiais, true);
   $temp = $AnoLiturgico->TempoGet(time());
+  $hoje = date('Y-m-d');
 
   if(isset($temp[0]) and $temp[0] === AnoLiturgico::TempoComum):
     $tempo = 'tc';
@@ -44,42 +45,24 @@ function Command_leitura(){
   $DiaSemana = date('N');
   if($DiaSemana === '7'):
     $ano = AnoLetra();
+  elseif(date('Y') % 2 === 0):
+    $ano = 'p';
   else:
-    if(date('Y') % 2 === 0):
-      $ano = 'p';
-    else:
-      $ano = 'i';
-    endif;
+    $ano = 'i';
   endif;
-  $hoje = date('Y-m-d');
-  if(isset($especiais[$hoje])):
-    $nome = $especiais[$hoje]['nome'];
-    $l1 = $especiais[$hoje][1];
-    $r = $especiais[$hoje]['r'];
-    if($DiaSemana === '7'):
-      $l2 = $especiais[$hoje][2];
-      $e = $especiais[$hoje]['e'];
-    else:
-      $e = $especiais[$hoje]['e'];
-    endif;
-  else:
-    $l1 = $index[$tempo][$semana][$DiaSemana][$ano][1];
-    $r = $index[$tempo][$semana][$DiaSemana][$ano]['r'];
-    if($DiaSemana === '7'):
-      $l2 = $index[$tempo][$semana][$DiaSemana][$ano][2];
-      $e = $index[$tempo][$semana][$DiaSemana][$ano]['e'];
-    else:
-      $e = $index[$tempo][$semana][$DiaSemana]['e'];
-    endif;
-  endif;
+  $l1 = $especiais[$hoje][1] ?? $index[$tempo][$semana][$DiaSemana][$ano][1];
+  $r = $especiais[$hoje]['r'] ?? $index[$tempo][$semana][$DiaSemana][$ano]['r'];
+  $l2 = $especiais[$hoje][2] ?? $index[$tempo][$semana][$DiaSemana][$ano][2] ?? null;
+  //Evangelho: especial ou domingo ou dia de semana...
+  $e = $especiais[$hoje]['e'] ?? $e = $index[$tempo][$semana][$DiaSemana][$ano]['e'] ?? $index[$tempo][$semana][$DiaSemana]['e'];
 
   $texto = '<b>' . $semana . 'ª semana do ' . $Tempos[$tempo] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
-  if(isset($nome)):
-    $texto .= '<b>' . $nome . "</b>\n";
+  if(isset($especiais[$hoje]['nome'])):
+    $texto .= '<b>' . $especiais[$hoje]['nome'] . "</b>\n";
   endif;
   $texto .= '1ª leitura: ' . $l1 . "\n";
   $texto .= 'Responsório: ' . $r . "\n";
-  if($DiaSemana === '7'):
+  if($l2 !== null):
     $texto .= '2ª leitura: ' . $l2 . "\n";
   endif;
   $texto .= 'Evangelho: ' . $e . "\n\n";
