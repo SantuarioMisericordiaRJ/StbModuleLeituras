@@ -1,5 +1,5 @@
 <?php
-//2021.09.07.00
+//2021.09.07.01
 //Protocol Corporation Ltda.
 https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -53,6 +53,7 @@ function Command_leitura(){
   endif;
   $hoje = date('Y-m-d');
   if(isset($especiais[$hoje])):
+    $nome = $especiais[$hoje]['nome'];
     $l1 = $especiais[$hoje][1];
     $r = $especiais[$hoje]['r'];
     if($DiaSemana === '7'):
@@ -73,6 +74,9 @@ function Command_leitura(){
   endif;
 
   $texto = '<b>' . $semana . 'ª semana do ' . $Tempos[$tempo] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
+  if(isset($nome)):
+    $texto .= '<b>' . $nome . "</b>\n";
+  endif;
   $texto .= '1ª leitura: ' . $l1 . "\n";
   $texto .= 'Responsório: ' . $r . "\n";
   if($DiaSemana === '7'):
