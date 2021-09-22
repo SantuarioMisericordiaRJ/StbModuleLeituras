@@ -1,0 +1,10 @@
+{
+  "Commands":[
+    [
+      "default",
+      "leitura",
+      "Ver as leituras do dia",
+      "leitura"
+    ]
+  ]
+}
