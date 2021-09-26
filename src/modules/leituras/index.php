@@ -1,5 +1,5 @@
 <?php
-//2021.09.19.00
+//2021.09.26.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -21,9 +21,9 @@ function AnoLetra(int $Ano = null):?string{
   endif;
 }
 
-function Command_leitura(TblCmd $Webhook){
+function Command_leitura(){
   DebugTrace();
-  global $Language;
+  global $Language, $Webhook;
   $AnoLiturgico = new AnoLiturgico();
   $Tempos = [
     AnoLiturgico::TempoComum => ['tc', 'Tempo comum'],
@@ -63,5 +63,5 @@ function Command_leitura(TblCmd $Webhook){
   endif;
   $texto .= 'Evangelho: ' . $e . "\n\n";
   $Webhook->ReplyMsg($texto, null, null, TblParse::Html);
-  LogEvent($Webhook, 'leitura');
+  LogEvent('leitura');
 }
