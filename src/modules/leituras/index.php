@@ -1,5 +1,5 @@
 <?php
-//2021.09.26.00
+//2021.09.29.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -61,7 +61,7 @@ function Command_leitura(){
   if($l2 !== null):
     $texto .= '2ª leitura: ' . $l2 . "\n";
   endif;
-  $texto .= 'Evangelho: ' . $e . "\n\n";
+  $texto .= 'Evangelho: ' . $e;
   $Webhook->ReplyMsg($texto, null, null, TblParse::Html);
   LogEvent('leitura');
 }
