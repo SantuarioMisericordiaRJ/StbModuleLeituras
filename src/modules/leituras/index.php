@@ -1,5 +1,5 @@
 <?php
-//2021.09.29.00
+//2021.10.02.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -24,6 +24,7 @@ function AnoLetra(int $Ano = null):?string{
 function Command_leitura(){
   DebugTrace();
   global $Language, $Webhook;
+  define('Url', 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/ApiCatolica/main/src');
   $AnoLiturgico = new AnoLiturgico();
   $Tempos = [
     AnoLiturgico::TempoComum => ['tc', 'Tempo comum'],
@@ -31,13 +32,15 @@ function Command_leitura(){
     AnoLiturgico::TempoQuaresma => ['qrm', 'Quaresma'],
     AnoLiturgico::TempoNatal => ['ntl', 'Natal']
   ];
-  $index = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/ApiCatolica/main/src/index-min.json');
-  $especiais = file_get_contents('https://raw.githubusercontent.com/SantuarioMisericordiaRJ/ApiCatolica/main/src/especiais-min.json');
+  $index = file_get_contents(Url . '/index.json');
   $index = json_decode($index, true);
+  $datas = file_get_contents(Url . '/datas.json');
+  $datas = json_decode($datas, true);
+  $especiais = file_get_contents(Url . '/especiais.json');
   $especiais = json_decode($especiais, true);
+
   list($tempo, $semana) = $AnoLiturgico->TempoGet(time());
   $hoje = date('Y-m-d');
-
   $DiaSemana = date('N');
   if($DiaSemana === '7'):
     $ano = AnoLetra();
@@ -46,22 +49,30 @@ function Command_leitura(){
   else:
     $ano = 'i';
   endif;
-  $l1 = $especiais[$hoje][1] ?? $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano][1];
-  $r = $especiais[$hoje]['r'] ?? $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano]['r'];
-  $l2 = $especiais[$hoje][2] ?? $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano][2] ?? null;
-  //Evangelho: especial ou domingo ou dia de semana...
-  $e = $especiais[$hoje]['e'] ?? $e = $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano]['e'] ?? $index[$Tempos[$tempo][0]][$semana][$DiaSemana]['e'];
+
+  if(isset($datas['all'][$hoje])):
+    $especial = $especiais[$datas['all'][$hoje]];
+    $l1 = $especial[1];
+    $r = $especial['r'];
+    $l2 = $especial[2] ?? null;
+    $e = $especial['e'];
+  else:
+    $l1 = $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano][1];
+    $r = $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano]['r'] ?? null;
+    $l2 = $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano][2] ?? null;
+    $e = $e = $index[$Tempos[$tempo][0]][$semana][$DiaSemana][$ano]['e'] ?? $index[$Tempos[$tempo][0]][$semana][$DiaSemana]['e'];
+  endif;
 
   $texto = '<b>' . $semana . 'ª semana do ' . $Tempos[$tempo][1] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
-  if(isset($especiais[$hoje]['nome'])):
-    $texto .= '<b>' . $especiais[$hoje]['nome'] . "</b>\n";
+  if(isset($especial)):
+    $texto .= '<b>' . $especial['nome'] . "</b>\n";
   endif;
   $texto .= '1ª leitura: ' . $l1 . "\n";
   $texto .= 'Responsório: ' . $r . "\n";
   if($l2 !== null):
     $texto .= '2ª leitura: ' . $l2 . "\n";
   endif;
-  $texto .= 'Evangelho: ' . $e;
+  $texto .= 'Evangelho: ' . $e . "\n\n";
   $Webhook->ReplyMsg($texto, null, null, TblParse::Html);
   LogEvent('leitura');
 }
