@@ -1,5 +1,5 @@
 <?php
-//2021.10.06.00
+//2021.10.07.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -50,7 +50,7 @@ function Command_leitura(){
     $ano = 'i';
   endif;
 
-  if(isset($datas['all'][$hoje][1])):
+  if(isset($datas['all'][$hoje])):
     $especial = $especiais[$datas['all'][$hoje]];
     $l1 = $especial[1];
     $r = $especial['r'];
