@@ -17,6 +17,24 @@
       "leitura",
       "Ver as leituras do dia",
       "leitura"
+    ],
+    [
+      "default",
+      "responsorio",
+      "Ver o responsorio do dia",
+      "responsorio"
+    ],
+    [
+      "all_private_chats",
+      "responsorio",
+      "Ver o responsorio do dia",
+      "responsorio"
+    ],
+    [
+      "all_group_chats",
+      "responsorio",
+      "Ver o responsorio do dia",
+      "responsorio"
     ]
   ]
 }
