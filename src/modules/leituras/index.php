@@ -1,5 +1,5 @@
 <?php
-//2021.10.09.00
+//2021.10.25.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -52,16 +52,18 @@ function Command_leitura(){
 
   if(isset($datas['all'][$hoje])):
     $especial = $especiais[$datas['all'][$hoje]];
-    $l1 = $especial[1];
-    $r = $especial['r'];
-    $l2 = $especial[2] ?? null;
-    $e = $especial['e'];
-  else:
-    $l1 = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][1];
-    $r = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['r'] ?? null;
-    $l2 = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][2] ?? null;
-    $e = $e = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['e'] ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['e'];
   endif;
+  $l1 = $especial[1]
+    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][1];
+  $r = $especial['r']
+    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['r']
+    ?? null;
+  $l2 = $especial[2]
+    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][2]
+    ?? null;
+  $e = $especial['e']
+    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['e']
+    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['e'];
 
   $texto = '<b>' . $semana . 'ª semana do ' . LeituraTempos[$tempo][1] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
   if(isset($datas['all'][$hoje])):
