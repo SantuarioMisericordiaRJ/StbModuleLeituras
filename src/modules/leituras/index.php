@@ -1,5 +1,5 @@
 <?php
-//2021.10.25.00
+//2021.11.19.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -108,7 +108,7 @@ function Command_responsorio():void{
     $r = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['r'];
     $rt = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['rt'];
   endif;
-  $rt = file_get_contents(LeituraUrl . '/salmos/' . $rt . '.json');
+  $rt = file_get_contents(LeituraUrl . '/responsorios/' . $rt . '.json');
   $rt = json_decode($rt, true);
 
   foreach($rt as $index => $salmo):
