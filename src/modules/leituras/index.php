@@ -1,5 +1,5 @@
 <?php
-//2021.11.28.00
+//2021.11.28.01
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -28,7 +28,7 @@ function Command_leitura(){
   $hoje = date('Y-m-d');
   $DiaSemana = date('N');
   if($DiaSemana === '7'):
-    $ano = AnoLetra();
+    $ano = AnoLetra(time(), $tempo);
   elseif(date('Y') % 2 === 0):
     $ano = 'p';
   else:
@@ -79,7 +79,7 @@ function Command_responsorio():void{
   $hoje = date('Y-m-d');
   $DiaSemana = date('N');
   if($DiaSemana === '7'):
-    $ano = AnoLetra();
+    $ano = AnoLetra(time(), $tempo);
   elseif(date('Y') % 2 === 0):
     $ano = 'p';
   else:
