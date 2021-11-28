@@ -1,9 +1,10 @@
 <?php
-//2021.11.19.00
+//2021.11.28.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
 require(__DIR__ . '/anoliturgico.php');
+require(__DIR__ . '/funcoes.php');
 const LeituraUrl = 'https://raw.githubusercontent.com/SantuarioMisericordiaRJ/ApiCatolica/main/src';
 const LeituraTempos = [
   AnoLiturgico::TempoComum => ['tc', 'Tempo comum'],
@@ -11,22 +12,6 @@ const LeituraTempos = [
   AnoLiturgico::TempoQuaresma => ['qrm', 'Quaresma'],
   AnoLiturgico::TempoNatal => ['ntl', 'Natal']
 ];
-
-function AnoLetra(int $Ano = null):?string{
-  if($Ano === null):
-    $Ano = time();
-  endif;
-  $temp = date('Y', $Ano) % 3;
-  if($temp === 0):
-    return 'c';
-  elseif($temp === 1):
-    return 'a';
-  elseif($temp === 2):
-    return 'b';
-  else:
-    return null;
-  endif;
-}
 
 function Command_leitura(){
   DebugTrace();
