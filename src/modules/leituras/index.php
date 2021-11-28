@@ -1,5 +1,5 @@
 <?php
-//2021.11.28.01
+//2021.11.28.02
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -16,7 +16,13 @@ const LeituraTempos = [
 function Command_leitura(){
   DebugTrace();
   global $Language, $Webhook;
+  
   $AnoLiturgico = new AnoLiturgico();
+  $temp = $AnoLiturgico->TemposGet();
+  if(time() > $temp[AnoLiturgico::TempoComum][34]):
+    $AnoLiturgico = new AnoLiturgico(strtotime('+1 year'));
+  endif;
+
   $index = file_get_contents(LeituraUrl . '/index.json');
   $index = json_decode($index, true);
   $datas = file_get_contents(LeituraUrl . '/datas.json');
@@ -67,7 +73,13 @@ function Command_leitura(){
 function Command_responsorio():void{
   DebugTrace();
   global $Webhook;
+
   $AnoLiturgico = new AnoLiturgico();
+  $temp = $AnoLiturgico->TemposGet();
+  if(time() > $temp[AnoLiturgico::TempoComum][34]):
+    $AnoLiturgico = new AnoLiturgico(strtotime('+1 year'));
+  endif;
+  
   $index = file_get_contents(LeituraUrl . '/index.json');
   $index = json_decode($index, true);
   $datas = file_get_contents(LeituraUrl . '/datas.json');
