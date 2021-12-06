@@ -1,5 +1,5 @@
 <?php
-//2021.11.28.02
+//2021.12.06.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -44,17 +44,31 @@ function Command_leitura(){
   if(isset($datas['all'][$hoje])):
     $especial = $especiais[$datas['all'][$hoje]];
   endif;
-  $l1 = $especial[1]
-    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][1];
-  $r = $especial['r']
-    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['r']
-    ?? null;
-  $l2 = $especial[2]
-    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][2]
-    ?? null;
-  $e = $especial['e']
-    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['e']
-    ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['e'];
+  //Tempo do advento não tem ano par e impar
+  if($tempo === AnoLiturgico::TempoAdvento):
+    $l1 = $especial[1]
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][1];
+    $r = $especial['r']
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['r']
+      ?? null;
+    $l2 = $especial[2]
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][2]
+      ?? null;
+    $e = $especial['e']
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['e'];
+  else:
+    $l1 = $especial[1]
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][1];
+    $r = $especial['r']
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['r']
+      ?? null;
+    $l2 = $especial[2]
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][2]
+      ?? null;
+    $e = $especial['e']
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['e']
+      ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['e'];
+  endif;
 
   $texto = '<b>' . $semana . 'ª semana do ' . LeituraTempos[$tempo][1] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
   if(isset($datas['all'][$hoje])):
@@ -101,6 +115,9 @@ function Command_responsorio():void{
   if(isset($datas['all'][$hoje])):
     $r = $especiais[$datas['all'][$hoje]]['r'];
     $rt = $especiais[$datas['all'][$hoje]]['rt'];
+  elseif($tempo === AnoLiturgico::TempoAdvento):
+    $r = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['r'];
+    $rt = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['rt'];
   else:
     $r = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['r'];
     $rt = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['rt'];
