@@ -1,5 +1,5 @@
 <?php
-//2021.12.06.00
+//2021.12.12.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -45,7 +45,7 @@ function Command_leitura(){
     $especial = $especiais[$datas['all'][$hoje]];
   endif;
   //Tempo do advento não tem ano par e impar
-  if($tempo === AnoLiturgico::TempoAdvento):
+  if($tempo === AnoLiturgico::TempoAdvento and $DiaSemana < 7):
     $l1 = $especial[1]
       ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][1];
     $r = $especial['r']
@@ -115,7 +115,7 @@ function Command_responsorio():void{
   if(isset($datas['all'][$hoje])):
     $r = $especiais[$datas['all'][$hoje]]['r'];
     $rt = $especiais[$datas['all'][$hoje]]['rt'];
-  elseif($tempo === AnoLiturgico::TempoAdvento):
+  elseif($tempo === AnoLiturgico::TempoAdvento and $DiaSemana < 7):
     $r = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['r'];
     $rt = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['rt'];
   else:
