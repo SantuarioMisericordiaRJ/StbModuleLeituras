@@ -1,5 +1,5 @@
 <?php
-//2021.12.12.00
+//2021.12.26.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -56,6 +56,11 @@ function Command_leitura(){
       ?? null;
     $e = $especial['e']
       ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['e'];
+  elseif($tempo === AnoLiturgico::TempoNatal and $semana === 1 and $DiaSemana === '7'):
+    $l1 = $index[LeituraTempos[$tempo][0]]['sgf'][1];
+    $r = $index[LeituraTempos[$tempo][0]]['sgf']['r'];
+    $l2 = $index[LeituraTempos[$tempo][0]]['sgf'][2];
+    $e = $index[LeituraTempos[$tempo][0]]['sgf']['e'];
   else:
     $l1 = $especial[1]
       ?? $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano][1];
@@ -71,7 +76,9 @@ function Command_leitura(){
   endif;
 
   $texto = '<b>' . $semana . 'ª semana do ' . LeituraTempos[$tempo][1] . ' - ' . $Language->TextGet('WeekDay' . $DiaSemana) . "</b>\n";
-  if(isset($datas['all'][$hoje])):
+  if($tempo === AnoLiturgico::TempoNatal and $semana === 1 and $DiaSemana === '7'):
+    $texto .= "<b>Sagrada família</b>\n";
+  elseif(isset($datas['all'][$hoje])):
     $texto .= '<b>' . $especiais[$datas['all'][$hoje]]['nome'] . "</b>\n";
   endif;
   $texto .= '1ª leitura: ' . $l1 . "\n";
@@ -118,6 +125,9 @@ function Command_responsorio():void{
   elseif($tempo === AnoLiturgico::TempoAdvento and $DiaSemana < 7):
     $r = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['r'];
     $rt = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana]['rt'];
+  elseif($tempo === AnoLiturgico::TempoNatal and $semana === 1 and $DiaSemana === '7'):
+    $r = $index[LeituraTempos[$tempo][0]]['sgf']['r'];
+    $rt = $index[LeituraTempos[$tempo][0]]['sgf']['rt'];
   else:
     $r = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['r'];
     $rt = $index[LeituraTempos[$tempo][0]][$semana][$DiaSemana][$ano]['rt'];
