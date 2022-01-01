@@ -1,5 +1,5 @@
 <?php
-//2021.12.31.00
+//2022.01.01.00
 //Protocol Corporation Ltda.
 //https://github.com/SantuarioMisericordiaRJ/StbModuleLeituras
 
@@ -61,7 +61,8 @@ function Command_leitura(){
     $r = $index[LeituraTempos[$tempo][0]]['sgf']['r'];
     $l2 = $index[LeituraTempos[$tempo][0]]['sgf'][2];
     $e = $index[LeituraTempos[$tempo][0]]['sgf']['e'];
-  elseif(date('n') == 12 and date('j') >= 26 and date('j') < 32):
+  elseif((date('n') == 12 and date('j') > 25)
+  or (date('n') == 1 and date('j') < 13)):
     $l1 = $index[LeituraTempos[$tempo][0]][date('j')][1];
     $r = $index[LeituraTempos[$tempo][0]][date('j')]['r'];
     $l2 = null;
@@ -137,7 +138,8 @@ function Command_responsorio():void{
   elseif($tempo === AnoLiturgico::TempoNatal and $semana === 1 and $DiaSemana === '7'):
     $r = $index[LeituraTempos[$tempo][0]]['sgf']['r'];
     $rt = $index[LeituraTempos[$tempo][0]]['sgf']['rt'];
-  elseif(date('n') == 12 and date('j') >= 26 and date('j') < 32):
+  elseif((date('n') == 12 and date('j') > 25)
+  or (date('n') == 1 and date('j') < 13)):
     $r = $index[LeituraTempos[$tempo][0]][date('j')]['r'];
     $rt = $index[LeituraTempos[$tempo][0]][date('j')]['rt'];
   else:
